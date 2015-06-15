@@ -1,0 +1,35 @@
+
+from approaches import bl_or_tl
+____________________  approaches  __________________________
+
+from repetitions_cross_valid_loov_per_treatment2b import run_n_times
+_______________________ repetitions_cross_valid_loov_per_treatment2b      ________________________
+
+from source_t_source3_loov_TL import reuse_SdA7
+from results_MFC7_cm2 import plot_cm
+import load_dataset2
+__________________  source_t_source3_loov_TL ____________
+
+from load_MFC7_data2 import load_dataset, load_multi_test_dataset
+from mlp import HiddenLayer
+from dA5 import dA5
+from SdA7_loov import SdA7
+from mlp5_train_model2_loov import train_test_mlp
+
+
+__________________  SdA7_loov _____________________
+
+from logistic_sgd5 import LogisticRegression
+from mlp import HiddenLayer
+from dA5 import dA5
+
+
+_________________________ dA5 _____________
+from logistic_sgd5 import load_data
+from utils import tile_raster_images
+
+
+_____________________________________________
+:::::::::::::::::::::::::::::::::::::::::::::
+
+

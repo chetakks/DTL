@@ -1,0 +1,62 @@
+ALLN 0
+AZ-A 1
+AZ-C 2
+AZ-J 3
+AZ-U 4
+AZ138 5
+AZ258 6
+AZ841 7
+DMSO 8
+MG-132 9
+PD-169316 10
+PP-2 11
+alsterpaullone 12
+anisomycin 13
+bryostatin 14
+camptothecin 15
+chlorambucil 16
+cisplatin 17
+colchicine 18
+cyclohexamide 19
+cytochalasin B 20
+cytochalasin D 21
+demecolcine 22
+docetaxel 23
+emetine 24
+epothilone B 25
+etoposide 26
+floxuridine 27
+lactacystin 28
+latrunculin B 29
+methotrexate 30
+mevinolin/lovastatin 31
+mitomycin C 32
+mitoxantrone 33
+nocodazole 34
+proteasome inhibitor I 35
+simvastatin 36
+taxol 37
+vincristine 38
+
+
+Actin disruptors 0
+Aurora kinase inhibitors 1
+Cholesterol-lowering 2
+DMSO 3
+DNA damage 4
+DNA replication 5
+Eg5 inhibitors 6
+Epithelial 7
+Kinase inhibitors 8
+Microtubule destabilizers 9
+Microtubule stabilizers 10
+Protein degradation 11
+Protein synthesis 12
+
+
+Number of mechanism of action 13
+['Actin disruptors' 'Aurora kinase inhibitors' 'Cholesterol-lowering'
+ 'DMSO' 'DNA damage' 'DNA replication' 'Eg5 inhibitors' 'Epithelial'
+ 'Kinase inhibitors' 'Microtubule destabilizers' 'Microtubule stabilizers'
+ 'Protein degradation' 'Protein synthesis']
+
