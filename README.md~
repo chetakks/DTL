@@ -53,5 +53,5 @@ Edit these file path to appropriately
 
 # Results and Confusion matrix
 ```sh
-python JBS_results.py
+
 ```
