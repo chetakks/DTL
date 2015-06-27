@@ -1,10 +1,10 @@
 from approaches import bl_or_tl
 params = {
 'finetune_lr':0.1,
-'pretraining_epochs':1,#60, #30,
+'pretraining_epochs':60, #30,
 'pretrain_lr':0.001,
-'training_epochs': 1, #000, #
-'hidden_layers_sizes': [5,5,5,5,5,5,5],#[500,500,500,500, 500, 500, 500  ],
+'training_epochs': 1000, #
+'hidden_layers_sizes': [500,500,500,500, 500, 500, 500  ],
 'batch_size':100,         
 #'output_fold':results_dir, #output_fold,
 'rng_seed': 1234
@@ -19,15 +19,15 @@ from pprint import pprint
 
 gpu_nr = 'gpu1'
 start_rep_nr = 0
-nr_reps = 2
+nr_reps = 10
 training_data_fractions = [1.00] 
 
 ############## results_dir       # fold               # source_fold  
-settings = [['results/BL_set1a22/', 'MFC7/set1_loov3a/', None               ],
-            ['results/BL_set1a22/', 'MFC7/set2_loov3a/', 'MFC7/set1_loov3a/'],
-            ['results/BL_set1a22/', 'MFC7/set2_loov3a/', 'MFC7/set1_loov3a/'],
-            ['results/BL_set1a22/', 'MFC7/set2_loov3a/', 'MFC7/set1_loov3a/'],
-            ['results/BL_set1a22/', 'MFC7/set2_loov3a/', 'MFC7/set1_loov3a/'],
+settings = [['results/BL_set1a/', 'MFC7/set1_loov3a/', None               ],
+            ['results/BL_set1a/', 'MFC7/set2_loov3a/', 'MFC7/set1_loov3a/'],
+            ['results/BL_set1a/', 'MFC7/set2_loov3a/', 'MFC7/set1_loov3a/'],
+            ['results/BL_set1a/', 'MFC7/set2_loov3a/', 'MFC7/set1_loov3a/'],
+            ['results/BL_set1a/', 'MFC7/set2_loov3a/', 'MFC7/set1_loov3a/'],
             #['results/BL_set1_compound/', 'MFC7/set1_loov3a/', None],
             #['results/BL_set1_compound/', 'MFC7/set2_loov3a/', 'MFC7/set1_loov3a_compound/'],
             ]

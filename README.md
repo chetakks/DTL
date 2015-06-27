@@ -27,7 +27,7 @@ wget http://www.deepnets.ineb.up.pt/files/ljosa_data.zip
 ```
 
 # Prepare the data in accordance to LOOV cross-validation:
-Eg: python $CODE/two_MFC7_data2.py '/home/aditya/store/Datasets/pickled/MFC7/ljosa_data/'
+Eg: python two_MFC7_data2.py '/home/aditya/store/Datasets/pickled/MFC7/ljosa_data/'
 ```sh
 $ python two_MFC7_data2.py <path-to-downloaded-ljosa-data>
 ```
