@@ -1,4 +1,4 @@
-# HPC syetem Requirements:
+# HPC syetem requirements:
 The following steps are important to setup the HPC machine to run on GPU
 http://deeplearning.net/software/theano/install.html#install
 ```sh
@@ -34,10 +34,10 @@ $ python two_MFC7_data2.py <path-to-downloaded-ljosa-data>
 
 # DTL experiments for 10 repetition
 ```sh
-taskset -c 0 python experiment_set1.py > results/BL_set1a/set1_rep1_5.txt 2>&1 &
-taskset -c 1 python experiment_set1.py > results/BL_set1a/set1_rep6_10.txt 2>&1 &
-taskset -c 2 python experiment_set2.py > results/BL_set2a/set2_rep1_5.txt 2>&1 &
-taskset -c 3 python experiment_set2.py > results/BL_set2a/set2_rep6_10.txt 2>&1 &
+taskset -c 0 nohup python experiment_set1.py > results/BL_set1a/set1_rep1_5.txt 2>&1 &
+taskset -c 1 nohup python experiment_set1.py > results/BL_set1a/set1_rep6_10.txt 2>&1 &
+taskset -c 2 nohup python experiment_set2.py > results/BL_set2a/set2_rep1_5.txt 2>&1 &
+taskset -c 3 nohup python experiment_set2.py > results/BL_set2a/set2_rep6_10.txt 2>&1 &
 ```
 
 # Edit JBS_results.py file:
@@ -53,5 +53,5 @@ Edit these file path to appropriately
 
 # Results and Confusion matrix
 ```sh
-
+python JBS_results.py
 ```
