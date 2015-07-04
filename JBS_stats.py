@@ -3,9 +3,9 @@ from stat_calculations import load_majvote_accus_cv, box_plot_performance
 target_name = 'set2'
 source_name = 'set1'
 
-''' Set1 Experiments '''
-target_name = 'set1'
-source_name = 'set2'
+# ''' Set1 Experiments '''
+# target_name = 'set1'
+# source_name = 'set2'
 
 
 
@@ -34,8 +34,7 @@ print 'DTL_00000011', DTL_00000011
 
 target_outputs_dir = '/home/aditya/store/Theano/DTL_HPC2/results/BL_'+target_name+'a/'
 
-data = [baseline, DTL_11111111, DTL_00111111, DTL_00001111, DTL_00000011]
-labels = ['baseline', 'DTL_11111111', 'DTL_00111111', 'DTL_00001111', 'DTL_00000011']
+data = [baseline, DTL_00000011, DTL_00001111, DTL_00111111, DTL_11111111]
 from scipy import stats
 
 paired_sample = stats.ttest_rel(baseline, DTL_11111111)

@@ -78,7 +78,8 @@ def box_plot_performance(target_outputs_dir, target_name, data):
         flier.set(marker='o', color='#e7298a', alpha=0.5)
     
     ## Custom x-axis labels
-    ax.set_xticklabels(['baseline', 'DTL_all', 'DTL_generic', 'DTL_both', 'DTL_specific'])
+    ax.set_xticklabels(['baseline', 'DTL_1', 'DTL_2', 'DTL_3', 'DTL_4'])
+
     
     ## Remove top axes and right axes ticks
     ax.get_xaxis().tick_bottom()

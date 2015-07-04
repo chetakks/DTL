@@ -132,6 +132,20 @@ def run_n_times(params,nr_reps,target_dataset,source_dataset,training_data_fract
                 print '                n_outs', params['n_outs']
                 print '               dropout', dropout
                 print '          dropout_rate', dropout_rate
+            if target_dataset == 'MFC7_norm':
+                print 'Fetching target dataset information ...'
+                params['dataset_A']     = target_dataset +'_'+ compound_label
+                params['n_ins']         = 453
+                params['n_outs']        = 12
+                params['dataset_B']     = None
+                params['n_outs_source'] = None
+                dropout                 = None
+                dropout_rate            = None
+                print 'target_dataset details', params['dataset_A']
+                print '                 n_ins', params['n_ins']
+                print '                n_outs', params['n_outs']
+                #print '               dropout', dropout
+                #print '          dropout_rate', dropout_rate
             if target_dataset == 'MFC7_set1+2':
                 print 'Fetching target dataset information ...'
                 params['dataset_A']     = target_dataset +'_'+ compound_label
