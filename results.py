@@ -70,7 +70,7 @@ nr_reps = 4
 # ##################################
 
 
-def results_per_rep(result_dir,approach, source_reuse_mode, target_dataset, fold, source_dataset, source_fold, nr_reps, transfer ):
+def results_per_rep(result_dir,approach, source_reuse_mode, target_dataset, fold, source_dataset, source_fold, nr_reps ):
 
     if approach == 'BL':
         treatment_items = load(data_path+fold+target_dataset+'_treatment_items.pkl.gz')
@@ -176,16 +176,13 @@ def results_per_rep(result_dir,approach, source_reuse_mode, target_dataset, fold
         print 'np.hstack(ground_truth)', np.hstack(ground_truth)
         print 'np.hstack(prediction)', np.hstack(prediction)
         
-        if target_dataset == 'MFC7_set1':
-            labels = ['Act', 'DR', 'Epi', 'KI', 'MS', 'PD']
-        elif target_dataset == 'MFC7_set2':
-            labels = ['Aur', 'Ch', 'DD', 'Eg5', 'MD', 'PS']
+        
         
         cm = confusion_matrix(np.hstack(ground_truth), np.hstack(prediction))
         print cm
         cm_rep.append(cm)
-        plot_cm(cm, mean(np.hstack(mtest_majvote_accus_cv)), std(np.hstack(mtest_majvote_accus_cv)), result_dir, ri + 1, type_of_cm = 'per_repeatation', labels= labels, #moa_items,
-                approach=approach,target_dataset=target_dataset,source_dataset=source_dataset,transfer=transfer)
+        plot_cm(cm, mean(np.hstack(mtest_majvote_accus_cv)), std(np.hstack(mtest_majvote_accus_cv)), result_dir, ri + 1, type_of_cm = 'per_repeatation', labels= moa_items,
+                approach=approach,target_dataset=target_dataset,source_dataset=source_dataset)
         
         outputs_cv = {}
         outputs_cv['ground_truth']              = np.hstack(ground_truth)
@@ -199,16 +196,14 @@ def results_per_rep(result_dir,approach, source_reuse_mode, target_dataset, fold
         outputs_cv['treatment_items']           = treatment_items
         outputs_cv['compound_items']            = compound_items
         outputs_cv['moa_items']                 = moa_items
-        outputs_cv['labels']                    = labels
         
-
-        
+    
         
         output_file_path = result_dir+'outputs_cv'+'_%03d.pkl.gz' % (ri+1)
         save(outputs_cv,output_file_path)
          
     
-            
+        
     
     def cal_rep_scores(dat_rep):
         a = []
@@ -247,9 +242,8 @@ def results_per_rep(result_dir,approach, source_reuse_mode, target_dataset, fold
     avg_cms = np.mean(cm_rep,axis=0)
     print 'avg_cms', avg_cms
     mean_accu, std_accu = cal_rep_scores(mtest_majvote_accus_rep)
-    plot_cm(avg_cms, mean_accu, std_accu, result_dir, None, type_of_cm = 'average', labels= labels, #moa_items,
-            approach=approach,target_dataset=target_dataset,source_dataset=source_dataset,transfer=transfer)
-
+    plot_cm(avg_cms, mean_accu, std_accu, result_dir, None, type_of_cm = 'average', labels= moa_items,
+            approach=approach,target_dataset=target_dataset,source_dataset=source_dataset)
     
     import sys
     fm = open(result_dir+'Avg_per_repetition.txt','a')

@@ -18,7 +18,7 @@ from pprint import pprint
 
 
 gpu_nr = 'gpu3'
-start_rep_nr = 0
+start_rep_nr = 7
 nr_reps = 10
 training_data_fractions = [1.00] 
 

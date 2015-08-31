@@ -14,6 +14,87 @@ def load_majvote_accus_cv(result_dir,nr_reps):
     
     return dat
 
+def load_classification_report_cv(result_dir,nr_reps):
+    dat = []
+    nr_class = 6
+    precisions = np.zeros([nr_class,nr_reps])
+    recalls = np.zeros([nr_class,nr_reps])
+    f1s = np.zeros([nr_class,nr_reps])
+    supports = np.zeros([nr_class,nr_reps])
+    
+    for ri in range(nr_reps):
+        print '---------------------------------repetition: ', ri+1
+    
+        output_file_path = result_dir+'outputs_cv'+'_%03d.pkl.gz' % (ri+1)
+        print 'output_file_path', output_file_path
+        outputs_cv = load(output_file_path)  
+        ground_truth = outputs_cv['ground_truth']
+        prediction   = outputs_cv['prediction']
+        labels       = outputs_cv['labels']
+        
+        #print ground_truth, prediction, labels
+        from sklearn.metrics import classification_report
+        import sys
+        
+        report = classification_report(ground_truth, prediction, target_names=labels)
+        
+        fc = open(result_dir+'Report.txt','w+')
+        old_stdout = sys.stdout   
+        sys.stdout = fc
+        print report
+        sys.stdout=old_stdout 
+        fc.close()
+        precisions[:,ri], recalls[:,ri], f1s[:,ri], supports[:,ri] = read_results(result_dir)
+
+    fcv = open(result_dir+'classification_report.txt','w+')
+    old_stdout = sys.stdout   
+    sys.stdout = fcv 
+    
+    print "MOA precision recall f1 support"
+    for i in range(nr_class):    
+        print '%s %.2f(%.2f) %.2f(%.2f) %.2f(%.2f) %d' % (labels[i],
+                                                               np.mean(precisions, axis=1)[i], np.std(precisions, axis=1)[i],
+                                                               np.mean(recalls,    axis=1)[i], np.std(recalls,    axis=1)[i],
+                                                               np.mean(f1s,        axis=1)[i], np.std(f1s,        axis=1)[i],
+                                                               np.mean(supports,   axis=1)[i])
+    print 'Avg %.2f(%.2f) %.2f(%.2f) %.2f(%.2f) %d' % (np.mean(precisions),np.std(precisions),
+                                                     np.mean(recalls), np.std(recalls),
+                                                     np.mean(f1s),np.std(f1s),
+                                                     np.sum(np.mean(supports,   axis=1)))
+    sys.stdout=old_stdout 
+    fcv.close()
+        
+    return dat
+
+
+def read_results(path):
+    import csv
+    Rfile = path + 'Report.txt'
+    i = open( Rfile, 'rb' )
+    reader = csv.reader( i )
+    print reader
+    import numpy as np
+
+    precision = np.zeros([6])
+    recall = np.zeros([6])
+    f1 = np.zeros([6])
+    support = np.zeros([6])
+    count = 0
+    for line_nr, line in enumerate(reader):
+        #print line
+        #print line_nr
+        if (line_nr != 0 and line_nr != 1 and line_nr != 8 and line_nr != 9 and line_nr != 10):
+            dat = line.pop(0).split()
+            #print dat
+            precision[count]= float(dat[1])
+            recall[count]=float(dat[2])
+            f1[count]=float(dat[3])
+            support[count]=float(dat[4])
+            count = count + 1
+    #print np.mean(precision), np.mean(recall), np.mean(f1), np.sum(support)
+    return precision, recall, f1, support
+            
+
 import cPickle
 import gzip
 def load(filename):

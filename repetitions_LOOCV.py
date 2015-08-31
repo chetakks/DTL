@@ -1,4 +1,5 @@
 from source_t_source3_loov_TL import reuse_SdA7
+#from source_t_source3_loov_cA5 import reuse_SdA7
 from results_MFC7_cm2 import plot_cm
 from sklearn.metrics import confusion_matrix
 from numpy import mean,std
@@ -18,12 +19,14 @@ def run_n_times(params,nr_reps,target_dataset,source_dataset,training_data_fract
             os.makedirs(target_outputs_dir)
              
     if source_outputs_dir is not None:
-
+        # load source networks
+        #print 'load source model from ',source_outputs_dir
+        #source_outputs_list = load_dataset2.load_outputs(source_outputs_dir)
         retrain_ft_layers_tmp = []
         for x in retrain_ft_layers:
             retrain_ft_layers_tmp.extend([int(x), int(x)])   
         retrain_ft_layers = retrain_ft_layers_tmp   
-
+        #print 'retrain_ft_layers = ',retrain_ft_layers
         
         tranferred_layers_tmp = []
         for x in tranferred_layers:
@@ -36,6 +39,12 @@ def run_n_times(params,nr_reps,target_dataset,source_dataset,training_data_fract
     sda_reuse_pt_models = []
     sda_reuse_ft2_models = []
     sda_reuse_ft_models = []
+#     best_val_errors = []
+#     test_score_errors = []
+#     pt_times = []
+#     ft_times = []
+#     y_test_preds = []
+#     y_tests = []
     val_epochs_rep = []
     val_epochs_errs_rep = []
     test_epochs_rep = []
@@ -69,9 +78,12 @@ def run_n_times(params,nr_reps,target_dataset,source_dataset,training_data_fract
         settings['target_dataset']  = target_dataset
         settings['compound_items']  = compound_items
         settings['moa_items']       = moa_items
-
+        #compound_items = ['proteasome inhibitor I']
+        #compound_items = ['taxol']
+        
         if source_outputs_dir is not None:
             source_compound_items = load_dataset2.load(data_path+source_fold+source_dataset+'_compound_items.pkl.gz')
+            #moa_items = load_dataset2.load(data_path+source_fold+source_dataset+'_moa_items.pkl.gz') 
             
             settings['source_compound_items']  = source_compound_items
              
@@ -84,21 +96,33 @@ def run_n_times(params,nr_reps,target_dataset,source_dataset,training_data_fract
         test_score_errors_cv = []
         pt_times_cv = []
         ft_times_cv = []
+        #y_test_preds_cv = []
+        #y_tests_cv = []
+#         val_epochs_rep_cv = []
+#         val_epochs_errs_rep_cv = []
+#         test_epochs_rep_cv = []
+#         test_epochs_errs_rep_cv = []
+        
+#         multi_test_labels_cv = []
         mtest_errors_cv = []
         mtest_accus_cv = []
         mtest_majvote_accus_cv = []
         mtest_majvote_errors_cv = []
         ground_truth    = []
         prediction      = []
-
+#         my_test_preds_cv = []
+#         my_tests_cv = []
+#         my_test_class_probs_cv = []
+#         mvote_per_class_cv = []
         target_outputs_dir = target_outputs_dir_repeat
         print 'target_outputs_dir', target_outputs_dir
         temp_dir  = target_outputs_dir
-
+        #temp_data = temp_data_repeat
+        #target_dataset = temp_data
         
             
         for idx, compound_label in enumerate(compound_items):
-
+            #if idx >= 30:
             start_tune_time_per_compound = time.clock()
                 
             target_outputs_dir = '{0}{1}/'\
@@ -132,20 +156,6 @@ def run_n_times(params,nr_reps,target_dataset,source_dataset,training_data_fract
                 print '                n_outs', params['n_outs']
                 print '               dropout', dropout
                 print '          dropout_rate', dropout_rate
-            if target_dataset == 'MFC7_norm':
-                print 'Fetching target dataset information ...'
-                params['dataset_A']     = target_dataset +'_'+ compound_label
-                params['n_ins']         = 453
-                params['n_outs']        = 12
-                params['dataset_B']     = None
-                params['n_outs_source'] = None
-                dropout                 = None
-                dropout_rate            = None
-                print 'target_dataset details', params['dataset_A']
-                print '                 n_ins', params['n_ins']
-                print '                n_outs', params['n_outs']
-                #print '               dropout', dropout
-                #print '          dropout_rate', dropout_rate
             if target_dataset == 'MFC7_set1+2':
                 print 'Fetching target dataset information ...'
                 params['dataset_A']     = target_dataset +'_'+ compound_label
@@ -165,6 +175,7 @@ def run_n_times(params,nr_reps,target_dataset,source_dataset,training_data_fract
                 print '               dropout', dropout
                 print '          dropout_rate', dropout_rate
             if source_dataset == 'MFC7_set1':
+            #if source_dataset == 'MFC7_set1_comp' or source_dataset == 'MFC7_set2_comp':
                 print 'Fetching source dataset information ...'
                 #params['dataset_B']      = source_dataset
                 params['dataset_B']      = source_dataset +'_'+ source_compound_items[10] 
@@ -178,15 +189,18 @@ def run_n_times(params,nr_reps,target_dataset,source_dataset,training_data_fract
                 dropout                  = None
                 
                 dropout_rate             = 0.5
+                #source_outputs_list      = load_dataset2.load_outputs(source_outputs_dir)
                 source_outputs_list      = load_dataset2.load_outputs(source_outputs_dir + source_compound_items[10] + '/')
                 print 'source_dataset details', params['dataset_B']
                 print '          n_ins_source', 453
                 print '         n_outs_source', params['n_outs_source']
+                #print 'source_outputs_dir'    , source_outputs_dir
                 print 'source_outputs_dir'    , source_outputs_dir + source_compound_items[10] + '/'
                 
             if source_dataset == 'MFC7_set2':
+            #if source_dataset == 'MFC7_set1_comp' or source_dataset == 'MFC7_set2_comp':
                 print 'Fetching source dataset information ...'
-
+                #params['dataset_B']      = source_dataset
                 params['dataset_B']      = source_dataset +'_'+ source_compound_items[5] 
                 params['n_outs_source']  = 6
                      
@@ -198,12 +212,12 @@ def run_n_times(params,nr_reps,target_dataset,source_dataset,training_data_fract
                 dropout                  = None
                 
                 dropout_rate             = 0.5
-
+                #source_outputs_list      = load_dataset2.load_outputs(source_outputs_dir)
                 source_outputs_list      = load_dataset2.load_outputs(source_outputs_dir + source_compound_items[5] + '/')
                 print 'source_dataset details', params['dataset_B']
                 print '          n_ins_source', 453
                 print '         n_outs_source', params['n_outs_source']
-
+                #print 'source_outputs_dir'    , source_outputs_dir
                 print 'source_outputs_dir'    , source_outputs_dir + source_compound_items[5] + '/'
                 
             if source_outputs_dir is not None:
@@ -250,8 +264,10 @@ def run_n_times(params,nr_reps,target_dataset,source_dataset,training_data_fract
                  params['n_outs'],
                  params['retrain'],
                  source_reuse_mode,
+                 #params['reset_pt'],
                  params['dataset_B'],
                  params['n_outs_source'],
+                 #params['n_outs_b'],
                  params['batch_size'],
                  params['output_fold'],
                  params['rng_seed'],
@@ -262,6 +278,7 @@ def run_n_times(params,nr_reps,target_dataset,source_dataset,training_data_fract
                  repetition=repetition,
                  tau=tau,
                  training_data_fraction=training_data_fraction,
+                 #dropout = dropout,
                  dropout_rate = dropout_rate,
                  gpu_nr = gpu_nr,
                  data_path = data_path,
@@ -276,23 +293,46 @@ def run_n_times(params,nr_reps,target_dataset,source_dataset,training_data_fract
             test_score_errors_cv.append(test_score)
             pt_times_cv.append(pt_time)
             ft_times_cv.append(ft_time)
-
+            #y_test_preds_cv.append(y_test_pred)
+            #y_tests_cv.append(y_test)
+             
+#             multi_test_labels_cv.append(multi_test_labels)
             mtest_errors_cv.append(mtest_errors)
             mtest_accus_cv.append(mtest_accus)
             mtest_majvote_accus_cv.append(mtest_majvote_accus)
             mtest_majvote_errors_cv.append(mtest_majvote_errors)
+#             my_test_preds_cv.append(my_test_preds)
+#             my_tests_cv.append(my_tests)
+#             my_test_class_probs_cv.append(my_test_class_probs)
+#             mvote_per_class_cv.append(mvote_per_class)
  
             outputs = {}
           
             # parameters
+            #outputs['cpu_model_name']   = cpuinfo.cpu.info[0]['model name']
             outputs['hidden_sizes']     = params['hidden_layers_sizes']
             outputs['pt_learning_rate'] = params['pretrain_lr']
+            #outputs['pt_noise_prob']    = pt_noise_prob
+            #outputs['pt_cost_function'] = pt_cost_function
+            #outputs['pt_tau']           = pt_tau
             outputs['ft_learning_rate'] = params['finetune_lr']
             outputs['ft_look_ahead']    = params['training_epochs']
-
+            #outputs['ft_cost_function'] = ft_cost_function
+            #outputs['ft_tau']           = ft_tau
+              
+            # performance measures
+          
+            # pre-training mean reconstruction costs over validation and test sets 
+            #outputs['pt_vali_costs']   = pt_vali_costs
+            #outputs['pt_test_costs']   = pt_test_costs
+            # fine-tuning validation error (lowest)
             outputs['ft_vali_err']     = best_val_error
+            # fine-tuning test error
             outputs['ft_test_err']     = test_score
-
+            # fine-tuning training error
+            #outputs['ft_trai_err']     = ft_trai_err
+            # fine-tuning balanced test error
+            #outputs['ft_bal_test_err'] = ft_bal_test_err
                   
             # the pre-trained model
             outputs['sda_reuse_pt_model'] = sda_reuse_pt_model
@@ -303,6 +343,10 @@ def run_n_times(params,nr_reps,target_dataset,source_dataset,training_data_fract
             outputs['pt_trai_times'] = pt_time
             # fine-tuning time
             outputs['ft_trai_time']  = ft_time
+              
+            #outputs['y_test_pred'] = y_test_pred
+            #outputs['y_test'] = y_test
+            #outputs['y_test_class_prob'] = y_test_class_prob
       
             outputs['val_epochs_rep']       = val_epochs_rep
             outputs['val_epochs_errs_rep']  = val_epochs_errs_rep
@@ -325,12 +369,31 @@ def run_n_times(params,nr_reps,target_dataset,source_dataset,training_data_fract
             outputs['mtest_majvote_errors']   = mtest_majvote_errors
              
                       
+            # ft validation error vs. epoch
+            #outputs['ft_vali_err_vs_stage'] = ft_vali_err_vs_stage
+            # this can be used e.g. to obtain the error for each class
+            #outputs['ft_confusion_matrix']  = ft_confusion_matrix
+#             save_training_info = 1 
+#             if save_training_info:
+#                 # save extra information on evolution of training
+#                   
+#                 outputs['pt_trai_costs_vs_stage']   = pt_trai_costs_vs_stage
+#                 outputs['pt_vali_costs_vs_stage']   = pt_vali_costs_vs_stage
+#                 outputs['pt_test_costs_vs_stage']   = pt_test_costs_vs_stage
+#                          
+#                 outputs['ft_trai_err_vs_stage']     = ft_trai_err_vs_stage
+#                 outputs['ft_test_err_vs_stage']     = ft_test_err_vs_stage
+#                 outputs['ft_n_incr_error_vs_stage'] = ft_n_incr_error_vs_stage
+#                 outputs['ft_effective_lr_vs_stage'] = ft_effective_lr_vs_stage
               
             load_dataset2.save(outputs,output_file_path)
             load_dataset2.save(settings,output_file_path)
               
             save_training_info = 0
             if save_training_info:
+                # save information on weights and biases
+    #             if not os.path.exists(target_outputs_dir):
+    #                 os.makedirs(target_outputs_dir)
                 import scipy.io as sio
                 print 'saving info PT weights'
                 sio.savemat(target_dataset+'_PT_WB.mat', {'WB':sda_reuse_pt_model})
@@ -373,9 +436,14 @@ def run_n_times(params,nr_reps,target_dataset,source_dataset,training_data_fract
             print 'mtest_majvote_accus', mtest_majvote_accus
             print 'mtest_majvote_errors', mtest_majvote_errors
             print 'mvote_per_class', mvote_per_class
+            #print 'my_test_pred_maj_votes', my_test_pred_maj_votes
+            #print 'my_test_preds', my_test_preds
+            #print 'my_tests', my_tests
             print
             MOAs = range(len(moa_items))
-
+            #MOAs = [0, 1, 2, 3, 4, 5]
+            #MOAs = [0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+            #MOAs = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
             print 'MOAs', MOAs
             for i in range(len(multi_test_labels)):
                 print 'Test set results for ......', multi_test_labels[i]
@@ -469,6 +537,9 @@ def run_n_times(params,nr_reps,target_dataset,source_dataset,training_data_fract
             print 'mtest_majvote_accus', mtest_majvote_accus
             print 'mtest_majvote_errors', mtest_majvote_errors
             print 'mvote_per_class', mvote_per_class
+            #print 'my_test_pred_maj_votes', my_test_pred_maj_votes
+            #print 'my_test_preds', my_test_preds
+            #print 'my_tests', my_tests
             print 'MOAs', MOAs
             print
             for i in range(len(multi_test_labels)):
@@ -478,6 +549,8 @@ def run_n_times(params,nr_reps,target_dataset,source_dataset,training_data_fract
                 print 'mvote_per_class=', mvote_per_class[i]
                 print 'Test accuracy after majority voting:', mtest_majvote_accus[i]
                 print 'True MOA class: %d, predicted MOA: %d' % (np.unique(my_tests[i]), predicted_MOA )
+                #prediction.append(predicted_MOA)
+                #ground_truth.append(np.unique(my_tests[i]))
                 print
             print confusion_matrix(np.hstack(my_tests), np.hstack(my_test_pred_maj_votes))
             print confusion_matrix(np.hstack(ground_truth), np.hstack(prediction))
@@ -538,6 +611,12 @@ def run_n_times(params,nr_reps,target_dataset,source_dataset,training_data_fract
         sda_reuse_pt_models.append(sda_reuse_pt_models_cv)
         sda_reuse_ft2_models.append(sda_reuse_ft2_models_cv)
         sda_reuse_ft_models.append(sda_reuse_ft_models_cv)
+        #best_val_errors.append(best_val_errors_cv)
+        #test_score_errors.append(test_score_errors_cv)
+        #pt_times.append(pt_times_cv)
+        #ft_times.append(ft_times_cv)
+        #y_test_preds.append(y_test_preds_cv)
+        #y_tests.append(y_tests_cv)
          
         print 'np.hstack(ground_truth)', np.hstack(ground_truth)
         print 'np.hstack(prediction)', np.hstack(prediction)

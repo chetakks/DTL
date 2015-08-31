@@ -1,0 +1,16 @@
+if ((modelfl = fopen ("results11", "w")) == NULL)
+  { perror (modelfile); exit (1); }
+  fprintf(modelfl,"SVM-light Version %s\n",VERSION);
+  fprintf(modelfl,"%ld # kernel type\n",
+	  model->kernel_parm.kernel_type);
+  fprintf(modelfl,"%ld # kernel parameter -d \n",
+	  model->kernel_parm.poly_degree);
+  fprintf(modelfl,"%.8g # kernel parameter -g \n",
+	  model->kernel_parm.rbf_gamma);
+  fprintf(modelfl,"%.8g # kernel parameter -s \n",
+	  model->kernel_parm.coef_lin);
+  fprintf(modelfl,"%.8g # kernel parameter -r \n",
+	  model->kernel_parm.coef_const);
+  fprintf(modelfl,"%s# kernel parameter -u \n",model->kernel_parm.custom);
+  fprintf(modelfl,"%ld # highest feature index \n",model->totwords);
+  fprintf(modelfl,"%ld # number of training documents \n",model->totdoc);
