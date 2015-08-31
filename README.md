@@ -57,7 +57,8 @@ python JBS_results.py
 ```
 
 # Experiments with SVM
+Install multiclass SVM light to run the above experiment. Note the above code is for SVM with RBF kernel. The dataset need to be in prefered format of the SVMlight. https://www.cs.cornell.edu/people/tj/svm_light/svm_multiclass.html
 ```sh
 taskset -c 0 nohup python run_rbf_msvm.py all_results/data10/c100_g0.001 100.0 2 0.001 > all_results/data10/c100_g0.001/console_set1_rep1.txt 2>&1 &
 ```
-Install multiclass SVM light to run the above experiment. Note the above code is for SVM with RBF kernel. The dataset need to be in prefered format of the SVMlight. https://www.cs.cornell.edu/people/tj/svm_light/svm_multiclass.html
+
